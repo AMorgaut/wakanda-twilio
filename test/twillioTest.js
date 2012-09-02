@@ -1,0 +1,1 @@
+﻿twilioTestSuite = require('wakanda-twilio/test/index');twilioTestSuite.run();
