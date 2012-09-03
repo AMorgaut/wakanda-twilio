@@ -1,1 +1,14 @@
-﻿var restClient;restClient = require('./rest');exports.account = require('./account');exports.SMS = require('./sms');exports.notifications = require('./notification');exports.transcriptions = require('./transcription');exports.calls = require('./call');/*restClient = require('wakanda-twilio/rest');exports.account = require('wakanda-twilio/account');exports.SMS = require('wakanda-twilio/sms');exports.notifications = require('wakanda-twilio/notification');exports.transcriptions = require('wakanda-twilio/transcription');exports.calls = require('wakanda-twilio/call');*/exports.configure = function Twilio_configure(accountSid, AuthToken, applicationSid) {	restClient.configure(accountSid, AuthToken, applicationSid);};
+﻿var restClient;
+
+restClient = require('./rest');
+
+exports.account = require('./account');
+exports.sms = require('./sms');
+exports.notification = require('./notification');
+exports.transcription = require('./transcription');
+exports.reccording = require('./reccording');
+exports.call = require('./call');
+
+exports.configure = function Twilio_configure(accountSid, AuthToken, applicationSid) {
+	restClient.configure(accountSid, AuthToken, applicationSid);
+};

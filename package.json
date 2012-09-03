@@ -1,1 +1,14 @@
-{    "name": "wakanda-twilio",    "description": "A Twilio client for Wakanda",    "version": "0.1",    "author": "Alexandre Morgaut (http://github.com/AMorgaut)",    "repository": {        "type": "git",        "url": "https://github.com/AMorgaut/wakanda-twilio.git"    },    "keywords": ["wakanda", "ssjs", "twilio", "sms", "phone"],    "main": "./index.js",    "engines": {"wakanda" : ">=2.115958"},    "license": "MIT"}
+{
+    "name": "wakanda-twilio",
+    "description": "A Twilio client for Wakanda",
+    "version": "0.1",
+    "author": "Alexandre Morgaut (http://github.com/AMorgaut)",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AMorgaut/wakanda-twilio.git"
+    },
+    "keywords": ["wakanda", "ssjs", "twilio", "sms", "phone"],
+    "main": "./index.js",
+    "engines": {"wakanda" : ">=2.115958"},
+    "license": "MIT"
+}
