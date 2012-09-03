@@ -2,6 +2,10 @@
 
 This module provides a synchronous SSJS API for Wakanda to use the Twilio services.
 
+Note that I'm very new to Twilio. I thought everything could work with direct payload 
+in the REST API but Twilio require sometimes a URL to external instructions written in TwiML. 
+The SMS features work without it, but calls require it, so I will add support for TwiML.
+
 
 ## Currently implemented API ##
 
@@ -22,6 +26,15 @@ This module provides a synchronous SSJS API for Wakanda to use the Twilio servic
 	* get(id)
 	* remove(id)
 	* getTranscriptionsList(reccordingId[, options])
+* queue
+	* getList([options])
+	* get(id)
+	* create([options])
+	* update(id[, options])
+	* remove(id)
+	* getMembers()
+	* getMember(memberId)
+	// still miss dequeueing actions
 * sms
 	* getList([options])
 	* get(id)
@@ -29,7 +42,7 @@ This module provides a synchronous SSJS API for Wakanda to use the Twilio servic
 * call
 	* getList([options])
 	* get(id)
-	* make(from, to[, options])
+	* make(from, to[, options]) // still need additional TwiML support
 	* modifyLiveCall(id, status)
 
 
@@ -77,10 +90,11 @@ On any of those services, to check if something goes wrong you can test this way
 
 ## TODO ##
 
+* Add TwiML support to add more actions (say, play, dial, record, ...)
+* Implement the missing services (conference, ...)
 * Create methods, in the returned result, based on its hypermedia informations
 * Handle the paging in lists
 * Support more settings like default page size by services
-* Implement the missing services (conference, ...)
 
 ## License (MIT License) ##
 

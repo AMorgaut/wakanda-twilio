@@ -1,5 +1,8 @@
 ﻿/**
  * @module Twillio/Queues
+ *
+ * Just a draft, you can not yet dequeue members
+ *
  **/
 
 var
@@ -128,13 +131,12 @@ exports.create = function twillio_Queue_create(options) {
 
 };
 
-
 /**
  * @method remove
  * @param {string} queueId
  * @return {Object}
  **/
-exports.remove = function twillio_Notification_delete(queueId) {
+exports.remove = function twillio_Queue_remove(queueId) {
 
 	return restClient.sendRequest(
 		'DELETE',
@@ -142,3 +144,33 @@ exports.remove = function twillio_Notification_delete(queueId) {
 	);
 
 };
+
+/**
+ * @method getMembers
+ * @param {string} queueId
+ * @return {Object}
+ **/
+exports.getMembers = function twillio_Queue_getMembers(queueId) {
+
+	return restClient.sendRequest(
+		'GET',
+		'Queues/' + queueId + '/Members'
+	);
+
+};
+
+/**
+ * @method getMembers
+ * @param {string} queueId
+ * @param {string} memberId
+ * @return {Object}
+ **/
+exports.getMember = function twillio_Queue_getMembers(queueId, memberId) {
+
+	return restClient.sendRequest(
+		'GET',
+		'Queues/' + queueId + '/Members/' + memberId
+	);
+
+};
+
