@@ -57,8 +57,13 @@ exports.sendRequest = function Twilio_Rest_sendRequest(method, service, params, 
 		Object.getOwnPropertyNames(params).forEach(function (paramName, index) {
 			urlEncodedParams.push(paramName + '=' + encodeURIComponent(params[paramName]));
 		});
-		urlEncodedParams = '?' + urlEncodedParams.join('&');
-		url += urlEncodedParams;
+		urlEncodedParams = urlEncodedParams.join('&');
+		
+		if (method === 'POST' || method === 'PUT') {
+			data = urlEncodedParams
+		} else {
+			url += '?' + urlEncodedParams;
+		}
 	}
 
 	xhr = new XMLHttpRequest();
@@ -66,7 +71,7 @@ exports.sendRequest = function Twilio_Rest_sendRequest(method, service, params, 
 	xhr.setRequestHeader('Authorization', authorization);
 
 	if (data) {
-		//xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
+		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
 		xhr.send(data);
 	} else {
 		xhr.send();
