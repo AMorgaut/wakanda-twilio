@@ -23,7 +23,9 @@ The SMS features work without it, but calls require it, so I will add support fo
     twilio.sms.send(from, to, message); // send a SMS
 ```
 
-Note: Wakanda doesn't support yet the automatic call to index.js when require is made on a folder. This feature is out of the scope of CommonJS modules and packages but is widely used in node.js ones. As it make it is really useful, it should be implemented in future versions of Wakanda, meaning that require('wakanda-twilio') will then also work while the above require('wakanda-twilio/index') will remain correct.
+Note: 
+Wakanda doesn't support yet the automatic call to index.js when require() is called on a folder. This feature is out of the scope of CommonJS modules and packages but is widely used in node.js ones. 
+As it is really useful, it should be implemented in future versions of Wakanda, meaning that require('wakanda-twilio') will then also work while the above require('wakanda-twilio/index') will remain correct.
 
 ## Prerequisite ##
 
