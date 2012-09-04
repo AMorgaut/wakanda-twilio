@@ -67,7 +67,7 @@ exports.sendRequest = function Twilio_Rest_sendRequest(method, service, params, 
 	}
 
 	xhr = new XMLHttpRequest();
-	xhr.open(method, url);
+	xhr.open(method, url, true); // explicit synchronous XHR mode
 	xhr.setRequestHeader('Authorization', authorization);
 
 	if (data) {
