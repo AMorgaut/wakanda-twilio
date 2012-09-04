@@ -6,6 +6,37 @@ Note that I'm very new to Twilio. I thought everything could work with direct pa
 in the REST API but Twilio require sometimes a URL to external instructions written in TwiML. 
 The SMS features work without it, but calls require it, so I will add support for TwiML.
 
+## Getting Started ##
+
+```javascript
+    var twilio, infos;
+    
+    twilio = require('wakanda-twilio/index');
+    
+    twilio.configure(
+    	AccountSid, //  Required
+    	AuthToken, // Required
+    	ApplicationSid // Required for many actions
+    );
+    
+    infos = twilio.account.get(); // get infos about the account
+    twilio.sms.send(from, to, message); // send a SMS
+```
+
+Note: Wakanda doesn't support yet the automatic call to index.js when require is made on a folder. This feature is out of the scope of CommonJS modules and packages but is widely used in node.js ones. As it make it is really useful, it should be implemented in future versions of Wakanda, meaning that require('wakanda-twilio') will then also work while the above require('wakanda-twilio/index') will remain correct.
+
+## Prerequisite ##
+
+Twilio require you to create an account on their website: https://www.twilio.com/try-twilio
+
+You can start using the API in trial mode, providing an **AccountSid** and a **AuthToken**, but most services will quickly require you to buy some credits and provide a **ApplicationSid**.
+
+
+## Installation ##
+
+To use the module, copy it in the "modules" folder of your Wakanda application, or of your Wakanda server.
+
+
 
 ## Currently implemented API ##
 
@@ -49,34 +80,6 @@ The SMS features work without it, but calls require it, so I will add support fo
 Note: The returned result is currently the raw result returned by Twilio. 
 It should be extended in the future, as to handle the paging in lists or return related objects
 
-
-## Prerequisite ##
-
-Twilio require you to create an account on their website: https://www.twilio.com/try-twilio
-
-You can start using the API in trial mode, providing an **AccountSid** and a **AuthToken**, but most services will quickly require you to buy some credits and provide a **ApplicationSid**.
-
-
-## Installation ##
-
-To use the module, copy it in the "modules" folder of your Wakanda application, or of your Wakanda server.
-
-
-## Getting Started ##
-
-```javascript
-    var twilio, infos;
-    
-    twilio = require('wakanda-twilio/index');
-    
-    twilio.configure(
-    	AccountSid, //  Required
-    	AuthToken, // Required
-    	ApplicationSid // Required for many actions
-    );
-    
-    infos = twilio.account.get(); // get infos about the account
-```
 
 ## Tips ##
 
