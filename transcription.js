@@ -1,15 +1,16 @@
 ﻿/**
  * @module Twillio/Transcription
+ * @author alexandre.morgaut@gmail.com
  **/
 
 var
 	restClient;
 
-restClient = require('./rest');
+restClient = require('./core/rest');
 
 /**
  * @method getList
- * @param {Object} options
+ * @param {Object} [options]
  * @return {Object}
  **/
 exports.getList = function twillio_Transcription_getList(options) {

@@ -1,11 +1,12 @@
 ﻿/**
- * @module Twillio/Recording
+ * @module Twillio/Recordings
+ * @author alexandre.morgaut@gmail.com
  **/
 
 var
 	restClient;
 
-restClient = require('./rest');
+restClient = require('./core/rest');
 
 /**
  * @method getList

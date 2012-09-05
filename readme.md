@@ -20,7 +20,7 @@ The SMS features work without it, but calls require it, so I will add support fo
     );
     
     infos = twilio.account.get(); // get infos about the account
-    twilio.sms.send(from, to, message); // send a SMS
+    twilio.sms.send(message, to, from); // send a SMS
 ```
 
 Note: 
@@ -71,7 +71,7 @@ To use the module, copy it in the "modules" folder of your Wakanda application, 
 * sms
 	* getList([options])
 	* get(id)
-	* send(from, to, body)
+	* send(message, to[, from])
 * call
 	* getList([options])
 	* get(id)

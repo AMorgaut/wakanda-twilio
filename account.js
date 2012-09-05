@@ -1,11 +1,12 @@
 ﻿/**
- * @module Twillio/account
+ * @module Twillio/Accounts
+ * @author alexandre.morgaut@gmail.com
  **/
 
 var
 	restClient;
 
-restClient = require('./rest');
+restClient = require('./core/rest');
 
 /**
  * @method get
@@ -44,25 +45,14 @@ exports.update = function Twillio_Account_update(options) {
 		accountSid = "";
 	}
 
-	if (options.hasOwnProperty('friendlyName')) {
-		/* 
-		The integer number of seconds that Twilio should allow the phone to ring before assuming there is no answer.
-		Default is 60 seconds, the maximum is 999 seconds. 
-		Note, you could set this to a low value, such as 15, to hangup before reaching an answering machine or voicemail.
-		Also see the answering machine section for other solutions.
-		*/
-		params.FriendlyName = options.friendlyName;
-	}
-
-	if (options.hasOwnProperty('status')) {
-		/* 
-		The integer number of seconds that Twilio should allow the phone to ring before assuming there is no answer.
-		Default is 60 seconds, the maximum is 999 seconds. 
-		Note, you could set this to a low value, such as 15, to hangup before reaching an answering machine or voicemail.
-		Also see the answering machine section for other solutions.
-		*/
-		params.Status = options.status;
-	}
+	restClient.applyOptions(
+		params,
+		options,
+		[
+			'FriendlyName',
+			'Status'
+		]
+	);
 
 	return restClient.sendRequest(
 		'GET',
@@ -85,15 +75,13 @@ exports.createSubAccount = function Twillio_Account_createSubAccount(options) {
 	params = {};
 	options = options || {};
 
-	if (options.hasOwnProperty('friendlyName')) {
-		/* 
-		The integer number of seconds that Twilio should allow the phone to ring before assuming there is no answer.
-		Default is 60 seconds, the maximum is 999 seconds. 
-		Note, you could set this to a low value, such as 15, to hangup before reaching an answering machine or voicemail.
-		Also see the answering machine section for other solutions.
-		*/
-		params.FriendlyName = options.friendlyName;
-	}
+	restClient.applyOptions(
+		params,
+		options,
+		[
+			'FriendlyName'
+		]
+	);
 
 	return restClient.sendRequest(
 		'POST',
