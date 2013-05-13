@@ -5,13 +5,13 @@
 
 var
 	baseURL,
-	Base64,
+	HateosInterface,
 	accountSid,
 	authorization,
 	applicationSid;
 
 baseURL = 'https://api.twilio.com/2010-04-01/';
-Base64 = require('wakanda-twilio/lib/base64').Base64;
+HateosInterface = require('wakanda-twilio/core/hateos').HateosInterface;
 
 /**
  * @method configure
@@ -20,9 +20,31 @@ Base64 = require('wakanda-twilio/lib/base64').Base64;
  * @param {String} [appSid]
  **/
 exports.configure = function Twilio_core_REST_configure(account, authToken, appSid) {
+	var
+		Base64;
+
+	Base64 = require('wakanda-twilio/lib/base64').Base64;
+
 	accountSid = account;
 	authorization =  'Basic ' + Base64.encode(accountSid + ':' + authToken);
 	applicationSid = appSid;
+};
+
+
+/**
+ * @method setApplication
+ * @param {String} appSid
+ **/
+exports.setApplication = function Twilio_core_REST_setApplication(appSid) {
+	applicationSid = appSid;
+};
+
+
+/**
+ * @method unsetApplication
+ **/
+exports.unsetApplication = function Twilio_core_REST_unsetApplication() {
+	applicationSid = undefined;
 };
 
 
@@ -83,11 +105,14 @@ exports.sendRequest = function Twilio_REST_sendRequest(method, service, params, 
 		xhr.send();
 	}
 
-	if (xhr.status !== 200) {
+	if (xhr.status >= 400) {
 		response = new Error(xhr.statusText);
 		response.details = JSON.parse(xhr.responseText);
 	} else {
 		response = JSON.parse(xhr.responseText);
+		if (response.uri) {
+			HateosInterface.apply(response);
+		}
 	}
 
 	return response;
@@ -100,7 +125,39 @@ exports.sendRequest = function Twilio_REST_sendRequest(method, service, params, 
  * @param {Array} selection
  **/
 exports.applyOptions = function Twilio_core_REST_applyOptions(params, options, selection) {
+
 	selection.forEach(function Twilio_core_REST_applyOptions_forEach(optionName) {
-		params[optionName] = options[optionName];
+
+		if (options.hasOwnProperty(optionName)) {
+			params[optionName] = options[optionName];
+		}
+
+	});
+
+};
+
+/**
+ * @method applyPaging
+ * @param {Object} params
+ * @param {Object} options
+ **/
+exports.applyPaging = function Twilio_core_REST_applyPaging(params, options) {
+	[
+		/* 
+		How many resources to return in each list page. The default is 50, and the maximum is 1000.
+		*/
+		'PageSize',
+
+		/* 
+		Which page to view. Zero-indexed, so the first page is 0. The default is 0.
+		*/
+		'Page'
+
+	].forEach(function Twilio_core_REST_applyPaging_forEach(optionName) {
+
+		if (options.hasOwnProperty(optionName)) {
+			params[optionName] = options[optionName];
+		}
+
 	});
 };
