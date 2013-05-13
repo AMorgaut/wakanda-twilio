@@ -4,11 +4,16 @@
  **/
 
 var
+	SERVICE_NAME,
 	restClient,
 	twimlFactory;
 
-restClient = require('./core/rest');
-twimlFactory = require('./core/twiml');
+
+SERVICE_NAME = 'Calls';
+
+restClient = require('wakanda-twilio/core/rest');
+twimlFactory = require('wakanda-twilio/core/twiml');
+
 
 /**
  * @method get
@@ -17,12 +22,10 @@ twimlFactory = require('./core/twiml');
  **/
 exports.get = function twillio_Call_get(callSId) {
 
-	return restClient.sendRequest(
-		'GET',
-		'Calls/' + callSId
-	);
+	return restClient.sendRequest('GET', SERVICE_NAME + '/' + callSId);
 
 };
+
 
 /**
  * @method getList
@@ -38,11 +41,11 @@ exports.getList = function twillio_Calls_getList(options) {
 	options = options || {};
 
 	/*
-		Dates Should be formatted as YYYY-MM-DD. 
-		Although inequalities are not supported in this interface, 
-		when making your own request you can also specify an inequality, 
-		such as StartTime<=YYYY-MM-DD for calls made at or before midnight on a date, 
-		and StartTime>=YYYY-MM-DD for calls made at or after midnight on a date.
+	Dates Should be formatted as YYYY-MM-DD. 
+	Although inequalities are not supported in this interface, 
+	when making your own request you can also specify an inequality, 
+	such as StartTime<=YYYY-MM-DD for calls made at or before midnight on a date, 
+	and StartTime>=YYYY-MM-DD for calls made at or after midnight on a date.
 	*/
 	restClient.applyOptions(
 		params,
@@ -53,16 +56,12 @@ exports.getList = function twillio_Calls_getList(options) {
 			'Status', // Filter to calls currently in this status.
 			'StartTime', // Filter to calls starting at this date.
 			'EndTime', // Filter to calls ending at this date.
-			'PageSize', // Number of resources to return in each list page. The default is 50, and the maximum is 1000.
-			'Page' //The page to view. Zero-indexed, so the first page is 0. The default is 0.
 		]
 	);
 
-	return restClient.sendRequest(
-		'GET',
-		'Calls',
-		params
-	);
+	restClient.applyPaging(params, options);
+
+	return restClient.sendRequest('GET', SERVICE_NAME, params);
 
 };
 
@@ -91,41 +90,41 @@ exports.make = function Twillio_Call_make(from, to, actions, options) {
 		params,
 		options,
 		[
-		/* 
-		A string of keys to dial after connecting to the number. 
-		Valid digits in the string include: any digit (0-9), '#', '*' and 'w' (to insert a half second pause).
-		For example, if you connected to a company phone number, and wanted to pause for one second, 
-		dial extension 1234 and then the pound key, use "ww1234#". 
-		Remember to URL-encode this string, since the '#' character has special meaning in a URL.
-		*/
+			/* 
+			A string of keys to dial after connecting to the number. 
+			Valid digits in the string include: any digit (0-9), '#', '*' and 'w' (to insert a half second pause).
+			For example, if you connected to a company phone number, and wanted to pause for one second, 
+			dial extension 1234 and then the pound key, use "ww1234#". 
+			Remember to URL-encode this string, since the '#' character has special meaning in a URL.
+			*/
 			'SendDigits',
-		/* 
-		Tell Twilio to try and determine if a machine (like voicemail) or a human has answered the call.
-		Possible values are Continue and Hangup. See the answering machines section for more info.
-		*/
+
+			/* 
+			Tell Twilio to try and determine if a machine (like voicemail) or a human has answered the call.
+			Possible values are Continue and Hangup. See the answering machines section for more info.
+			*/
 			'IfMachine',
-		/* 
-		The integer number of seconds that Twilio should allow the phone to ring before assuming there is no answer.
-		Default is 60 seconds, the maximum is 999 seconds. 
-		Note, you could set this to a low value, such as 15, to hangup before reaching an answering machine or voicemail.
-		Also see the answering machine section for other solutions.
-		*/
+
+			/* 
+			The integer number of seconds that Twilio should allow the phone to ring before assuming there is no answer.
+			Default is 60 seconds, the maximum is 999 seconds. 
+			Note, you could set this to a low value, such as 15, to hangup before reaching an answering machine or voicemail.
+			Also see the answering machine section for other solutions.
+			*/
 			'Timeout',
-		/* 
-		Set this parameter to 'true' to record the entirety of a phone call. 
-		The RecordingUrl will be sent to the StatusCallback URL. Defaults to 'false'.
-		*/
+
+			/* 
+			Set this parameter to 'true' to record the entirety of a phone call. 
+			The RecordingUrl will be sent to the StatusCallback URL. Defaults to 'false'.
+			*/
 			'Record'
 		]
 	);
 
-	return restClient.sendRequest(
-		'POST',
-		'Calls',
-		params
-	);
+	return restClient.sendRequest('POST', SERVICE_NAME, params);
 
 };
+
 
 /**
  * @method modifyLiveCall
@@ -142,10 +141,6 @@ exports.modifyLiveCall = function Twillio_Call_modifyLiveCall(callSid, status) {
 		Status: status
 	};
 
-	return restClient.sendRequest(
-		'POST',
-		'Calls/' + callSid,
-		params
-	);
+	return restClient.sendRequest('POST', SERVICE_NAME + '/' + callSid, params);
 
 };

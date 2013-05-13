@@ -4,9 +4,14 @@
  **/
 
 var
+	SERVICE_NAME,
 	restClient;
 
-restClient = require('./core/rest');
+
+SERVICE_NAME = 'Accounts';
+
+restClient = require('wakanda-twilio/core/rest');
+
 
 /**
  * @method get
@@ -17,10 +22,7 @@ exports.get = function Twillio_Account_get(accountSid) {
 
 	accountSid = accountSid || "";
 
-	return restClient.sendRequest(
-		'GET',
-		'Accounts/' + accountSid
-	);
+	return restClient.sendRequest('GET', SERVICE_NAME + '/' + accountSid);
 
 };
 
@@ -54,11 +56,7 @@ exports.update = function Twillio_Account_update(options) {
 		]
 	);
 
-	return restClient.sendRequest(
-		'GET',
-		'Accounts/' + accountSid,
-		params
-	);
+	return restClient.sendRequest('GET', SERVICE_NAME + '/' + accountSid, params);
 
 };
 
@@ -83,23 +81,25 @@ exports.createSubAccount = function Twillio_Account_createSubAccount(options) {
 		]
 	);
 
-	return restClient.sendRequest(
-		'POST',
-		'Accounts',
-		params
-	);
+	return restClient.sendRequest('POST', SERVICE_NAME, params);
 
 };
 
 /**
- * @method getlist
+ * @method getList
+ * @param {Object} options
  * @return {Object}
  **/
-exports.getlist = function Twillio_Account_getlist() {
+exports.getList = function Twillio_Account_getlist(options) {
 
-	return restClient.sendRequest(
-		'GET',
-		'Accounts'
-	);
+	var
+		params;
+
+	params = {};
+	options = options || {};
+
+	restClient.applyPaging(params, options);
+
+	return restClient.sendRequest('GET', SERVICE_NAME, params);
 
 };

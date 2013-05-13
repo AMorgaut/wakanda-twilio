@@ -4,9 +4,13 @@
  **/
 
 var
+	SERVICE_NAME,
 	restClient;
 
-restClient = require('./core/rest');
+
+SERVICE_NAME = 'Notifications';
+
+restClient = require('wakanda-twilio/core/rest');
 
 /**
  * @method getList
@@ -21,44 +25,30 @@ exports.getList = function twillio_Notification_getList(options) {
 	params = {};
 	options = options || {};
 
-	if (options.hasOwnProperty('Log')) {
-		/* 
-		Only show notifications for the integer log level corresponding to the type of notification: 
-		0 is ERROR, 1 is WARNING, 2 is INFO, and 3 is DEBUG.
-		*/
-		params.Log = options.Log;
-	}
+	restClient.applyOptions(
+		params,
+		options,
+		[
+			/* 
+			Only show notifications for the integer log level corresponding to the type of notification: 
+			0 is ERROR, 1 is WARNING, 2 is INFO, and 3 is DEBUG.
+			*/
+			'Log',
 
-	if (options.hasOwnProperty('MessageDate')) {
-		/* 
-		Only show notifications for this date. Should be formatted as YYYY-MM-DD. 
-		Although inequalities are not supported in this interface, 
-		when making your own request you can also specify an inequality, 
-		such as MessageDate<=YYYY-MM-DD for messages logged at or before midnight on a date, 
-		and MessageDate>=YYYY-MM-DD for messages logged at or after midnight on a date.
-		*/
-		params.MessageDate = options.MessageDate;
-	}
-
-	if (options.hasOwnProperty('PageSize')) {
-		/* 
-		How many resources to return in each list page. The default is 50, and the maximum is 1000.
-		*/
-		params.PageSize = options.PageSize;
-	}
-
-	if (options.hasOwnProperty('Page')) {
-		/* 
-		Which page to view. Zero-indexed, so the first page is 0. The default is 0.
-		*/
-		params.Page = options.Page;
-	}
-
-	return restClient.sendRequest(
-		'GET',
-		'Notifications',
-		params
+			/* 
+			Only show notifications for this date. Should be formatted as YYYY-MM-DD. 
+			Although inequalities are not supported in this interface, 
+			when making your own request you can also specify an inequality, 
+			such as MessageDate<=YYYY-MM-DD for messages logged at or before midnight on a date, 
+			and MessageDate>=YYYY-MM-DD for messages logged at or after midnight on a date.
+			*/
+			'MessageDate',
+		]
 	);
+
+	restClient.applyPaging(params, options);
+
+	return restClient.sendRequest('GET', SERVICE_NAME, params);
 
 };
 
@@ -69,10 +59,7 @@ exports.getList = function twillio_Notification_getList(options) {
  **/
 exports.get = function twillio_Notification_get(notificationId) {
 
-	return restClient.sendRequest(
-		'GET',
-		'Notifications/' + notificationId
-	);
+	return restClient.sendRequest('GET', SERVICE_NAME + '/' + notificationId);
 
 };
 
@@ -84,9 +71,6 @@ exports.get = function twillio_Notification_get(notificationId) {
  **/
 exports.remove = function twillio_Notification_delete(notificationSid) {
 
-	return restClient.sendRequest(
-		'DELETE',
-		'Notifications/' + notificationSid
-	);
+	return restClient.sendRequest('DELETE', SERVICE_NAME + '/' + notificationSid);
 
 };

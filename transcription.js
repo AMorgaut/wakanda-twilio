@@ -4,7 +4,10 @@
  **/
 
 var
+	SERVICE_NAME,
 	restClient;
+
+SERVICE_NAME = 'Transcriptions';
 
 restClient = require('./core/rest');
 
@@ -21,25 +24,9 @@ exports.getList = function twillio_Transcription_getList(options) {
 	params = {};
 	options = options || {};
 
-	if (options.hasOwnProperty('PageSize')) {
-		/* 
-		How many resources to return in each list page. The default is 50, and the maximum is 1000.
-		*/
-		params.PageSize = options.PageSize;
-	}
+	restClient.applyPaging(params, options);
 
-	if (options.hasOwnProperty('Page')) {
-		/* 
-		Which page to view. Zero-indexed, so the first page is 0. The default is 0.
-		*/
-		params.Page = options.Page;
-	}
-
-	return restClient.sendRequest(
-		'GET',
-		'Transcriptions',
-		params
-	);
+	return restClient.sendRequest('GET', SERVICE_NAME, params);
 
 };
 
@@ -50,10 +37,7 @@ exports.getList = function twillio_Transcription_getList(options) {
  **/
 exports.get = function twillio_Transcription_get(transcriptionId) {
 
-	return restClient.sendRequest(
-		'GET',
-		'Transcriptions/' + transcriptionId
-	);
+	return restClient.sendRequest('GET', SERVICE_NAME + '/' + transcriptionId);
 
 };
 
