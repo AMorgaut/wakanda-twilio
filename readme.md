@@ -2,9 +2,6 @@
 
 This module provides a synchronous SSJS API for Wakanda to use the Twilio services.
 
-Note that I'm very new to Twilio. I thought everything could work with direct payload 
-in the REST API but Twilio require sometimes a URL to external instructions written in TwiML. 
-The SMS features work without it, but calls require it, so I will add support for TwiML.
 
 ## Getting Started ##
 
@@ -20,7 +17,7 @@ The SMS features work without it, but calls require it, so I will add support fo
     );
     
     infos = twilio.account.get(); // get infos about the account
-    twilio.sms.send(message, to, from); // send a SMS
+    twilio.sms.send(from, to, message); // send a SMS
 ```
 
 Note: 
@@ -43,10 +40,22 @@ To use the module, copy it in the "modules" folder of your Wakanda application, 
 ## Currently implemented API ##
 
 * account:
-	* getList(), 
+	* getList([options]), 
 	* get([id]), 
 	* update([options])
 	* creatSubAccount([options])
+* application:
+	* getList([options]), 
+	* get(id), 
+	* create(friendlyName, [options])
+	* update(id, [options])
+	* remove(id)
+* incomingNumber:
+	* getList([options]), 
+	* get(id), 
+	* create(phoneNumber, areaCode, [options])
+	* update(id, [options])
+	* remove(id)
 * notification: 
 	* getList([options])
 	* get(id)
@@ -58,24 +67,24 @@ To use the module, copy it in the "modules" folder of your Wakanda application, 
 	* getList([options])
 	* get(id)
 	* remove(id)
-	* getTranscriptionsList(reccordingId[, options])
+	* getTranscriptionsList(id[, options])
 * queue
 	* getList([options])
 	* get(id)
 	* create([options])
-	* update(id[, options])
+	* update(id, [options])
 	* remove(id)
-	* getMembers()
+	* getMembers([options])
 	* getMember(memberId)
 	// still miss dequeueing actions
 * sms
 	* getList([options])
 	* get(id)
-	* send(message, to[, from])
+	* send(from, to, message)
 * call
 	* getList([options])
 	* get(id)
-	* make(from, to[, options]) // still need additional TwiML support
+	* make(from, to, [options]) // still need additional TwiML support
 	* modifyLiveCall(id, status)
 
 
@@ -97,13 +106,11 @@ On any of those services, to check if something goes wrong you can test this way
 
 * Add TwiML support to add more actions (say, play, dial, record, ...)
 * Implement the missing services (conference, ...)
-* Create methods, in the returned result, based on its hypermedia informations
-* Handle the paging in lists
 * Support more settings like default page size by services
 
 ## License (MIT License) ##
 
-Copyright (c) 2012 Alexandre Morgaut
+Copyright (c) 2012-2013 Alexandre Morgaut
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
