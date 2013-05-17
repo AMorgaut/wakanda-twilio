@@ -1,1 +1,1 @@
-﻿twilioTestSuite = require('wakanda-twilio/test/index');twilioTestSuite.run();
+﻿var 	twilioTestSuite,	credentials;twilioTestSuite = require('wakanda-twilio/test/index');credentials = require('credentials-nogit').twilio;twilioTestSuite.init(credentials.accountSid, credentials.authToken);twilioTestSuite.run();console.info('Twilio test suites succeded');'SUCCESS';
