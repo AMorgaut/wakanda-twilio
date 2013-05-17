@@ -88,6 +88,18 @@ To use the module, copy it in the "modules" folder of your Wakanda application, 
 	* modifyLiveCall(id, status)
 
 
+###TwiML support###
+
+	* hangup()
+	* load(name)
+	* pause()
+	* play(audioURI, loop)
+	* save(name, script)
+	* say(text, options)
+	* sendSMS(text, options)
+	* toString()
+	* toURI(permanent)
+
 Note: The returned result is currently the raw result returned by Twilio. 
 It should be extended in the future, as to handle the paging in lists or return related objects
 
@@ -104,7 +116,7 @@ On any of those services, to check if something goes wrong you can test this way
 
 ## TODO ##
 
-* Add TwiML support to add more actions (say, play, dial, record, ...)
+* Add better Dial & Gather support in TwiML
 * Implement the missing services (conference, ...)
 * Support more settings like default page size by services
 
