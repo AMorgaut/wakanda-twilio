@@ -4,39 +4,110 @@
  **/
 
 var
+	BASE_URL,
+	MOCK_BASE_URL,
 	baseURL,
 	HateosInterface,
 	accountSid,
 	authorization,
+	application,
 	applicationSid;
 
-baseURL = 'https://api.twilio.com/2010-04-01/';
+BASE_URL = 'https://api.twilio.com/2010-04-01/';
+MOCK_BASE_URL = (httpServer.ssl.enabled ? 'https://' : 'http://') + httpServer.hostName + ':' + httpServer.port + '/mock-twilio-service/';
+
+baseURL = BASE_URL;
 HateosInterface = require('wakanda-twilio/core/hateos').HateosInterface;
+
+require('wakanda-twilio/lib/base64').implementPolyfil();
+
+
+
+
+/**
+ * @method setTestMode
+ * @param {boolean} on
+ **/
+exports.setTestMode = function setTestMode(on) {
+	var
+		handlerPath;
+
+	handlerPath = new File(module.id + '.js').parent.path + 'mock-twilio-httpRequestHandler.js';
+	if (on) {
+		baseURL = MOCK_BASE_URL;
+		addHttpRequestHandler('^mock-twilio-service', handlerPath, 'resquestHandler');
+	} else {
+		baseURL = BASE_URL;
+		removeHttpRequestHandler('^mock-twilio-service', handlerPath, 'resquestHandler');
+	}
+};
+
 
 /**
  * @method configure
- * @param {String} account
- * @param {String} authToken
- * @param {String} [appSid]
+ * @param {string} account
+ * @param {string} authToken
+ * @param {string} [appSid]
+ * @return {boolean}
  **/
 exports.configure = function Twilio_core_REST_configure(account, authToken, appSid) {
 	var
-		Base64;
+		servicesSettings;
 
-	Base64 = require('wakanda-twilio/lib/base64').Base64;
+	if (account && authToken) {
+		if (!storage.services.twilio) {
+			 if (typeof registerService === 'function') {
+			 	registerService('Twilio');
+			 }
+			 storage.lock();
+			 servicesSettings = storage.getItem('services');
+			 if (!servicesSettings.hasOwnProperty('twilio')) {
+			 	 servicesSettings.twilio = {
+			         name: 'Twilio'
+			 	 };
+			 }
+			 servicesSettings.twilio.modulePath = 'wakanda-twilio/core/service';
+			 storage.setItem('services', servicesSettings);
+			 storage.unlock();
+		}
+		accountSid = account;
+		authorization =  'Basic ' + btoa(accountSid + ':' + authToken);
+		applicationSid = appSid;
+		application = exports.sendRequest('GET', 'Applications/' + appSid);
+		return true;
+	} else {
+		return false;
+	}
+};
 
-	accountSid = account;
-	authorization =  'Basic ' + Base64.encode(accountSid + ':' + authToken);
-	applicationSid = appSid;
+
+/**
+ * @method isConfigured
+ * @return {boolean}
+ **/
+exports.isConfigured = function Twilio_core_REST_isConfigured() {
+	return Boolean(accountSid);
 };
 
 
 /**
  * @method setApplication
- * @param {String} appSid
+ * @param {string} appSid
  **/
 exports.setApplication = function Twilio_core_REST_setApplication(appSid) {
+	var
+		application;
+
 	applicationSid = appSid;
+	applications = applicationSvc.getList().elements;
+    assert.strictEqual(applications instanceof Error, false, 'no error during the get request by name');
+    var application;
+    applications.some(function (currentApp) {
+		if (currentApp.friendlyName === APPLICATION_NAME) {
+			application = currentApp;
+			return true;
+		}
+    });
 };
 
 
