@@ -3,6 +3,7 @@
 ##About##
 
 Those test suites are using the CommonJS 'test' and 'assert' modules
+It use the Mockup data from the 'twilio-python' resource test folder*
 
 ##How to use##
 
@@ -30,3 +31,5 @@ twilioTestSuite.run();
 
 console.info('test suite succeded');
 ```
+
+*https://github.com/twilio/twilio-python/tree/master/tests/resources
