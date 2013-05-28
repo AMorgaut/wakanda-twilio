@@ -22,7 +22,7 @@ function runTestSuite(testSuite) {
 			testSuite[testName]();
 			console.info('SUCCESS', testName);
 		} catch(e) {
-			console.error('ERROR', testName);
+			console.error('ERROR', testName, e.message, e);
 		}
 	});
 }

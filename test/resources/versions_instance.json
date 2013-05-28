@@ -1,7 +1,7 @@
 {
-	name: "{{version}}",
-	uri: "/{{version}}.json",
-	subresource_uris: {
-		accounts: "/{{version}}/Accounts.json"
+	"name": "2010-04-01",
+	"uri": "\/2010-04-01.json",
+	"subresource_uris": {
+		"accounts": "\/2010-04-01\/Accounts.json"
 	}
 }
