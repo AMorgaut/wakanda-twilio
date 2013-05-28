@@ -5,25 +5,33 @@ var
 	twilioCore;
 
 TEST_SUITES = [
-//	'account',
-//	'application',
-//	'sms',
-	'lib-base64'
+	'lib-base64',
+	'core-twiml',
+	'mock-http',
+	'account',
+	'application',
+	'sms'
 ];
 
 //test = require('test');
-twilioCore = require('wakanda-twilio/core/rest');
+twilioCore = require('../core/rest');
 
 function runTestSuite(testSuite) {
 	Object.keys(testSuite).forEach(function runTest(testName) {
-		testSuite[testName]();
-		console.info('SUCCESS', testName);
+		try {
+			testSuite[testName]();
+			console.info('SUCCESS', testName);
+		} catch(e) {
+			console.error('ERROR', testName);
+		}
 	});
 }
 
 exports.init = function Twilio_Test_Init(sid, token) {
 	twilioCore.configure(sid, token);
 }
+
+exports.setTestMode = twilioCore.setTestMode;
 
 exports.run = function Twilio_Test_run() {
 	TEST_SUITES.forEach(
